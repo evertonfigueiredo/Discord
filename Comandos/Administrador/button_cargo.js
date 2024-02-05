@@ -18,7 +18,7 @@ module.exports = {
 
             let embed = new Discord.EmbedBuilder()
                 .setColor("Green")
-                .setDescription(`Olá seja bem-vindo, para que você possa ter acesso a todo o conteudo do nosso servidor clique no botão abaixo e registre-se.`)
+                .setDescription(`Olá seja bem-vindo, para que você possa ter acesso a todo o conteúdo do nosso servidor clique no botão abaixo e registre-se.`)
 
             let botao = new Discord.ActionRowBuilder()
                 .addComponents(

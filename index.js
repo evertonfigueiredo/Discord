@@ -3,7 +3,7 @@ const { Player } = require('discord-player');
 require('dotenv').config()
 
 const client = new Discord.Client({
-    intents: [1, 512, 32768, 2, 128,
+    intents: [
         Discord.IntentsBitField.Flags.DirectMessages,
         Discord.IntentsBitField.Flags.GuildInvites,
         Discord.IntentsBitField.Flags.GuildMembers,

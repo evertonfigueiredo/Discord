@@ -36,7 +36,8 @@ module.exports = {
                 iconURL: "https://www.shutterstock.com/image-vector/vinnytsia-ukraine-may-7-2023-600nw-2299584421.jpg"
             })
 
-        await interaction.reply({embeds: [embed]})
+        await interaction.reply({content: "Mensagem enviada", ephemeral: true})
+        await interaction.channel.send({embeds: [embed]})
 
 
     } catch (error) {
