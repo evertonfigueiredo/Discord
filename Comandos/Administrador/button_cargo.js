@@ -8,6 +8,14 @@ module.exports = {
     run: async (client, interaction) => {
 
         try {
+
+            if (!interaction.member.permissions.has(Discord.PermissionsBitField.Flags.ManageMessages)) {
+                return interaction.reply({
+                    content: "⚠️ Você precisa fazer parte da STAFF para poder usar esse comando.",
+                    ephemeral: true
+                })
+            }
+
             let embed = new Discord.EmbedBuilder()
                 .setColor("Green")
                 .setDescription(`Olá seja bem-vindo, para que você possa ter acesso a todo o conteudo do nosso servidor clique no botão abaixo e registre-se.`)
