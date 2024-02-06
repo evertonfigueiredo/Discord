@@ -46,7 +46,11 @@ async function criarChat(nome, tipo, interaction) {
     //Pesquisando se existe ticket aberto
     let canalTicket = await interaction.guild.channels.cache.find(canal => canal.name === nome)
     if (canalTicket) {
-        interaction.reply({ content: `❌ Você já possui um ticket em aberto em ${canalTicket}`, ephemeral: true })
+        interaction.reply({ content: `❌ Você já possui um ticket em aberto em ${canalTicket}`, ephemeral: true }).then((data) => {
+            setTimeout(async () => {
+                await data.delete()
+            },5000)
+        })
         return
     }
 
@@ -79,7 +83,11 @@ async function criarChat(nome, tipo, interaction) {
             }
         ]
     }).then((channel) => {
-        interaction.reply({ content: `✅ Olá ${interaction.user}, seu ticket foi aberto em ${channel}!`, ephemeral: true })
+        interaction.reply({ content: `✅ Olá ${interaction.user}, seu ticket foi aberto em ${channel}!`, ephemeral: true }).then((data) => {
+            setTimeout(async () => {
+                await data.delete()
+            },5000)
+        })
 
         let embed = new Discord.EmbedBuilder()
             .setColor("Green")

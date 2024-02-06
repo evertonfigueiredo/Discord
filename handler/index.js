@@ -1,32 +1,16 @@
-const fs = require("fs")
+const globPromise = require('glob-promise');
 
 module.exports = async (client) => {
 
-    const SlashsArray = []
+    const commandFiles = await globPromise(`Comandos/**/*.js`);
+    commandFiles.map((value) => {
+        const file = require(`../${value}`);
+        const splitted = value.split("/");
+        const directory = splitted[splitted.length - 2];
 
-    fs.readdir(`./Comandos`, (error, folder) => {
-        folder.forEach(subfolder => {
-            fs.readdir(`./Comandos/${subfolder}/`, (error, files) => {
-                files.forEach(files => {
-
-                    if (!files?.endsWith('.js')) return;
-                    files = require(`../Comandos/${subfolder}/${files}`);
-                    if (!files?.name) return;
-                    client.slashCommands.set(files?.name, files);
-
-                    SlashsArray.push(files)
-                });
-            });
-        });
+        if (file.name) {
+            const properties = { directory, ...file };
+            client.slashCommands.set(file.name, properties);
+        }
     });
-    // Definindo comandos slash quando o bot estiver pronto
-    client.on("ready", async () => {
-        client.guilds.cache.forEach(guild => {
-            guild.commands.set(SlashsArray)
-            .then(() => console.log(`Comandos slash registrados em ${guild.name}`))
-            .catch(console.error);
-        });
-    });
-
-
 };

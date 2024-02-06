@@ -1,11 +1,11 @@
 const Discord = require("discord.js")
-const { Player } = require('discord-player');
+const globPromise = require('glob-promise');
 require('dotenv').config()
 
 const process = require('node:process')
 
 process.on("unhandledRejection", (reason, promise) => {
-    console.log("Rejeição:",promise,"reason",reason);
+    console.log("Rejeição:", promise, "reason", reason);
 })
 
 const client = new Discord.Client({
@@ -15,19 +15,17 @@ const client = new Discord.Client({
     ],
 });
 
-const player = new Player(client);
-client.player = player;
-
 module.exports = client
 
 client.on('interactionCreate', (interaction) => {
 
-    if (interaction.type === Discord.InteractionType.ApplicationCommand) {
-        const cmd = client.slashCommands.get(interaction.commandName);
-        if (!cmd) return interaction.reply(`Error`);
-        interaction["member"] = interaction.guild.members.cache.get(interaction.user.id);
-        cmd.run(client, interaction)
-    }
+    if (!interaction.isChatInputCommand()) return;
+
+    const command = client.slashCommands.get(interaction.commandName);
+    if (!command) return;
+
+    command.run(client, interaction);
+
 })
 
 client.slashCommands = new Discord.Collection()
@@ -36,11 +34,13 @@ require('./handler')(client)
 
 client.login(process.env.token)
 
-const fs = require('fs');
-
-fs.readdir('./Eventos', (err, file) => {
-    file.forEach(event => {
-        require(`./Eventos/${event}`)
+async function ler_eventos() {
+    let eventos = await globPromise("./Eventos/*.js")
+    eventos.map((value) => {
+        const file = require(`${value}`)
     })
-})
+}
+
+ler_eventos()
+
 
