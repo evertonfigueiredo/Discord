@@ -4,24 +4,27 @@ const Discord = require('discord.js')
 const client = require('../index')
 
 
-client.on('interactionCreate', (interaction) => {
+client.on('interactionCreate', async (interaction) => {
 
     try {
         if (interaction.isStringSelectMenu() && interaction.customId === "painel_ticket") {
             let opc = interaction.values[0]
             if (opc === "suporte") {
-                let canalNome = `🔧-${interaction.user.id}`
-                criarChat(canalNome, "Suporte", interaction)
+                let canalNome = `${interaction.user.id}`
+                await criarChat(canalNome, "Suporte", interaction)
+                return
             }
 
             if (opc === "bot") {
-                let canalNome = `🤖-${interaction.user.id}`
-                criarChat(canalNome, "Bot", interaction)
+                let canalNome = `${interaction.user.id}`
+                await criarChat(canalNome, "Bot", interaction)
+                return
             }
 
             if (opc === "programacao") {
-                let canalNome = `💻-${interaction.user.id}`
-                criarChat(canalNome, "Programação", interaction)
+                let canalNome = `${interaction.user.id}`
+                await criarChat(canalNome, "Programação", interaction)
+                return
             }
         }
 
@@ -38,12 +41,13 @@ client.on('interactionCreate', (interaction) => {
 
 })
 
-function criarChat(nome, tipo, interaction) {
+async function criarChat(nome, tipo, interaction) {
 
     //Pesquisando se existe ticket aberto
-    let canalTicket = interaction.guild.channels.cache.find(canal => canal.name === nome)
+    let canalTicket = await interaction.guild.channels.cache.find(canal => canal.name === nome)
     if (canalTicket) {
-        return interaction.reply({ content: `❌ Você já possui um ticket em aberto em ${canalTicket}`, ephemeral: true })
+        interaction.reply({ content: `❌ Você já possui um ticket em aberto em ${canalTicket}`, ephemeral: true })
+        return
     }
 
     //Pesquisando se existe a categoria informada

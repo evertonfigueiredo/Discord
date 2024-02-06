@@ -16,7 +16,7 @@ module.exports = {
   run: async (client, interaction) => {
 
     try {
-        
+      
         let titulo = interaction.options.getString("titulo")
 
         let autorName = interaction.user.username;
@@ -35,11 +35,9 @@ module.exports = {
                 text: "Texto na parte de baixo do Embed!",
                 iconURL: "https://www.shutterstock.com/image-vector/vinnytsia-ukraine-may-7-2023-600nw-2299584421.jpg"
             })
-
-        await interaction.reply({content: "Mensagem enviada", ephemeral: true})
-        await interaction.channel.send({embeds: [embed]})
-
-
+            
+        interaction.reply({content: "Mensagem enviada", ephemeral: true})
+        interaction.channel.send({embeds: [embed]})
     } catch (error) {
         console.log(error);
     }
