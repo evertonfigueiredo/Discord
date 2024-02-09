@@ -1,22 +1,27 @@
-require('../index')
-
 const Discord = require('discord.js')
 const client = require('../index')
 
-
-client.on('interactionCreate', (interaction) => {
+client.on("interactionCreate", async (interaction) => {
 
     try {
+        
         if (interaction.isButton() && interaction.customId === "registrar") {
+            
             let role = interaction.guild.roles.cache.find(r => r.name === "Registrado")
-            interaction.guild.members.cache.get(interaction.user.id).roles.add(role)
+            await interaction.guild.members.cache.get(interaction.user.id).roles.add(role)
+
             let embed = new Discord.EmbedBuilder()
                 .setColor("Green")
-                .setDescription(`Parabéns, cargo atribuido com sucesso!`)
-            
-            interaction.reply({embeds: [embed], ephemeral: true})
-        }
-    } catch (error) {
+                .setDescription(`Parabéns, cargo atribuído com sucesso!`)
 
+            await interaction.reply({embeds: [embed], ephemeral: true})
+
+        }
+
+
+    } catch (error) {
+        console.log(error);
     }
+
+
 })
